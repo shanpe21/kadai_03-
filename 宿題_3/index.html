@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>myMemoPad</title>
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+</head>
+<body>
+
+<header>
+<h1>定例mtgの参加方法</h1>
+</header>
+<main>
+    <p>お名前</p>
+    <input type="text" id="key">
+
+    <p>日付</p>
+    <input type="date" id="date">
+
+    <p>参加方法</p>
+    <select name="example" id="sanka">
+        <option value="オンサイト">オンサイト</option>
+        <option value="オンライン">オンライン</option>
+        <option value="欠席">欠席</option>
+    </select>
+
+    <p>自由記入</p>
+    <textarea id="memo"></textarea>
+
+    <ul>
+        <li id="save">登録する</li>
+        <li id="clear">削除する(基本は触らないでください)</li>
+    </ul>
+
+    <h1 class="alart">他の出席者の状況は下記で確認ください</h1>
+
+</main>
+<table id="list">
+<!-- ここに追加データが挿入される -->
+</table>
+
+<script>
+
+$("#save").on("click" , function (){
+const key = $("#key").val();
+const date = $("#date").val();
+const sanka = $("#sanka").val();
+const memo = $("#memo").val();
+localStorage.setItem(key,date,sanka,memo);
+const html = `
+    <tr>
+        <th>${key}</th>
+        <td>${date}</td>
+        <td>${sanka}</td>
+        <td>${memo}</td>
+    </tr>
+`;
+$("#list").append(html);
+});
+
+//2.clear クリックイベント
+$("#clear").on("click" , function (){
+    // alert(1);
+    localStorage.clear();
+    $("#list").empty();
+});
+
+
+for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+
+        const html = `
+            <tr>
+                <th>${key}</th>
+                <td>${value}</td>
+            </tr>
+        `;
+
+        // 画面に表示
+        $("#list").append(html);
+      }
+
+</script>
+
+<footer><small>G's</small></footer>
+</body>
+</html>
